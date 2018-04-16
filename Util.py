@@ -1,6 +1,6 @@
 from Preprocess import Preprocess
 from Recognize import Recognize
-from Hack import GetScreenshot
+from AutoPlay import GetScreenshot
 from PIL import Image
 import os
 import time
