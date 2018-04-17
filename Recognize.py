@@ -2,12 +2,14 @@ from PIL import Image
 from Preprocess import Preprocess
 import json
 import numpy
-import time
 
 
 class Recognize(Preprocess):
-    def Recognize(self, screenshot):
-        img = Image.open(screenshot).convert('L')
+    def Recognize(self, imgFile):
+        """
+        :param imgFile: 表明图片地址的字符串对象，或者 BytesIO 对象
+        """
+        img = Image.open(imgFile).convert('L')
         img = img.crop([0, 700, 1080, 1200])
         img = self.Binaryzation(img)
 
@@ -27,7 +29,7 @@ class Recognize(Preprocess):
                 nearness1[c] = self.HammingDistance(hashVal, hashValsDict[c])
             expr += sorted(nearness1.items(), key=lambda d: d[1])[0][0]
 
-            nearness2 = {}
+        nearness2 = {}
         for characterImg in characterList2:
             hashVal = self.Hash(characterImg)
             for c in hashValsDict:
