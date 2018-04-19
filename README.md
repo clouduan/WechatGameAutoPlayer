@@ -4,7 +4,7 @@
 
 ## 游戏说明
 「加减大师」是腾讯推出的一款微信小游戏，玩法极其简单，它给出一个等式，要玩家在指定时间内判断等式的对错，答对40个就算挑战成功，可以赢取娃娃。
-游戏界面截图如下
+游戏界面截图及辅助运行动图如下
 
 <div align="center">
   <img src="./Images/PlusSubstractMaster1.jpg" height="150">
@@ -37,3 +37,4 @@ $ sudo pip3 install -r requirements.txt
 
 ## Todo
 - [ ] 识别速度问题，这是个亟待解决的问题。详情参见[Issue-2](https://github.com/clouduan/WechatGameAutoPlayer/issues/2)
+- [ ] 适配 IOS 系统
