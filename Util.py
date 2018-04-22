@@ -9,7 +9,7 @@ import json
 
 def GetScreenshots():
     for i in range(50):
-        GetScreenshot('Screenshots/' + str(i))
+        GetScreenshot('Screenshots/' + str(i) + '.png')
         time.sleep(1)
 
 

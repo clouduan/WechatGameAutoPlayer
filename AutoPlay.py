@@ -9,9 +9,16 @@ from io import BytesIO
 def GetScreenshot(picName='screenshot.png'):
     process = subprocess.Popen('adb shell screencap -p', shell=True, stdout=subprocess.PIPE)
     screenshot = process.stdout.read()
+    if screenshot == b'':
+        print('Please make sure you can run adb commands successfully.')
+        os._exit(0)
+
     if sys.platform == 'win32':
         screenshot = screenshot.replace(b'\r\n', b'\n')
 
+    if picName:
+        with open(picName, 'wb') as f:
+            f.write(screenshot)
     # 直接在内存中读写，节约时间
     imgFile = BytesIO(screenshot)
     return imgFile
