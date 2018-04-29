@@ -18,7 +18,7 @@ def Binaryzation(img, threshold=220):
 
 @TimeMeasuring
 def VerticalCut(binImg):
-    width, height = binImg.size
+    _, height = binImg.size
     # 列表保存像素累加值大于0的列
     pix = np.array(binImg)
     xp = list(np.sum(pix, axis=0))
@@ -47,7 +47,7 @@ def VerticalCut(binImg):
 
 @TimeMeasuring
 def HorizontalCut(binImg):
-    width, height = binImg.size
+    width, _ = binImg.size
     pix = np.array(binImg)
     yp = list(np.sum(pix, axis=1))
     y0 = []
@@ -85,7 +85,8 @@ def Hash(img):
 
 def HammingDistance(hash1, hash2):
     if len(hash1) != len(hash2):
-        print(hash1, hash2)
+        print('hash1: ', hash1)
+        print('hash2: ', hash2)
         raise ValueError("Undefined for sequences of unequal length")
     return sum(i != j for i, j in zip(hash1, hash2))
 
@@ -95,7 +96,7 @@ def Recognize(img):
     """
     输入：经过裁剪的含有等式的区域图像
     """
-    # img = Image.open(imgFile).convert('L')
+    img = img.convert('L')
     img = Binaryzation(img)
 
     horizontalSegImgs = HorizontalCut(img)
@@ -121,9 +122,10 @@ def Recognize(img):
             nearness2[c] = HammingDistance(hashVal, hashValsDict[c])
         expr += sorted(nearness2.items(), key=lambda d: d[1])[0][0]
 
-    expr = expr.replace('subtract', '-')
-    expr = expr.replace('plus', '+')
-    expr = expr.replace('equal', '==')
+    expr = expr \
+        .replace('subtract', '-') \
+        .replace('plus', '+') \
+        .replace('equal', '==')
 
     return expr
 

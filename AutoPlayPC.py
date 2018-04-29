@@ -33,7 +33,7 @@ def Play():
     m = PyMouse()
     flag = ""
     while True:
-        a = time.perf_counter()
+        # start = time.perf_counter()
         time.sleep(0.1)
         try:
             scr = GetScreenshot()
@@ -51,7 +51,7 @@ def Play():
             if 'scr' in vars():
                 scr.save('failed.png')
             print('Error occurred: ', e)
-        print('One loop: ', time.perf_counter() - a)
+        # print('One loop: ', time.perf_counter() - a)
 
 
 if __name__ == '__main__':
