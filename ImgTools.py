@@ -1,5 +1,5 @@
 from PIL import Image
-from Util import Time_using
+from TimeMeasurement import TimeMeasuring
 import numpy as np
 import json
 
@@ -16,15 +16,15 @@ def Binaryzation(img, threshold=220):
     return binImg
 
 
-@Time_using
+@TimeMeasuring
 def VerticalCut(binImg):
-    _, height = binImg.size
+    width, height = binImg.size
     # 列表保存像素累加值大于0的列
-    x0 = []
     pix = np.array(binImg)
     xp = list(np.sum(pix, axis=0))
+    x0 = []
     for x in range(len(xp)):
-        if xp[x] > 10:
+        if xp[x] > 1:
             x0.append(x)
     # 找出边界
     segList = []
@@ -45,14 +45,14 @@ def VerticalCut(binImg):
         return False
 
 
-@Time_using
+@TimeMeasuring
 def HorizontalCut(binImg):
-    width, _ = binImg.size
-    y0 = []
+    width, height = binImg.size
     pix = np.array(binImg)
     yp = list(np.sum(pix, axis=1))
+    y0 = []
     for y in range(len(yp)):
-        if yp[y] > 10:
+        if yp[y] > 1:
             y0.append(y)
     # 找出边界
     segList = []
@@ -71,7 +71,7 @@ def HorizontalCut(binImg):
 
 
 def Hash(img):
-    img = img.resize((10, 15), Image.LANCZOS).convert("L")
+    img = img.resize((20, 30), Image.LANCZOS).convert("L")
     pixels = np.array(img).flatten()
     avg = pixels.mean()
     hashVal = ''
@@ -90,10 +90,12 @@ def HammingDistance(hash1, hash2):
     return sum(i != j for i, j in zip(hash1, hash2))
 
 
-@Time_using
-def Recognize(imgFile):
-    img = Image.open(imgFile).convert('L')
-    img = img.crop([0, 700, 1080, 1200])
+@TimeMeasuring
+def Recognize(img):
+    """
+    输入：经过裁剪的含有等式的区域图像
+    """
+    # img = Image.open(imgFile).convert('L')
     img = Binaryzation(img)
 
     horizontalSegImgs = HorizontalCut(img)
@@ -130,6 +132,6 @@ if __name__ == '__main__':
     """
     以下代码只用于debug
     """
-    expr = Recognize('./Screenshots/0th.png')
-
-    print(expr)
+    scr = Image.open('Screenshots/0th.png')
+    scr = scr.crop([0, 700, 1080, 1200])
+    print(Recognize(scr))

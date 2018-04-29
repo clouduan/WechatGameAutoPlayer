@@ -1,13 +1,3 @@
-def Time_using(func):
-    def wrap(*args, **kwargs):
-        time_flag = time.perf_counter()
-        result = func(*args)
-        print(func.__name__ + ': %.5fs' % (time.perf_counter() - time_flag))
-        return result
-
-    return wrap
-
-
 from ImgTools import *
 from PIL import Image
 import os
@@ -48,5 +38,5 @@ def GetHashValue():
 
 
 if __name__ == '__main__':
-    GetCharacters()
-    # GetHashValue()
+    # GetCharacters()
+    GetHashValue()
