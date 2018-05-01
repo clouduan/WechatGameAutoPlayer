@@ -36,6 +36,8 @@ def GetHashValue():
     with open('HashFiles/hash.json', 'w') as fp:
         json.dump(hashValsDict, fp)
 
+    return True
+
 
 if __name__ == '__main__':
     # GetCharacters()

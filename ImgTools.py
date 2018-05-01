@@ -33,7 +33,6 @@ def VerticalCut(binImg):
         if abs(x0[i] - x0[i - 1]) > 1:
             segList.extend([x0[i - 1], x0[i]])
     segList.append(x0[-1])
-    print(segList)
 
     imgList = []
     # 切割顺利的话应该是整对
@@ -47,7 +46,6 @@ def VerticalCut(binImg):
 def HorizontalCut(binImg):
     width, _ = binImg.size
     pix = list(np.sum(np.array(binImg) == 0, axis=1))
-    print(pix)
     y0 = []
     for y in range(len(pix)):
         if pix[y] > 1:
@@ -90,7 +88,6 @@ def Recognize(img):
     """
     img = img.convert('L')
     img = Binaryzation(img)
-    img.show()
 
     horizontalSegImgs = HorizontalCut(img)
     characterList1 = VerticalCut(horizontalSegImgs[0])

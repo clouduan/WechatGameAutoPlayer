@@ -3,3 +3,4 @@ __pycache__/
 .idea/
 screenshot.png
 failed.png
+.pytest_cache/
