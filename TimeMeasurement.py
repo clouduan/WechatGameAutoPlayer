@@ -48,9 +48,10 @@ def recognize(img):
             nearness2[c] = HammingDistance(hashVal, hashValsDict[c])
         expr += sorted(nearness2.items(), key=lambda d: d[1])[0][0]
 
-    expr = expr.replace('subtract', '-')
-    expr = expr.replace('plus', '+')
-    expr = expr.replace('equal', '==')
+    expr = expr \
+        .replace('subtract', '-') \
+        .replace('plus', '+') \
+        .replace('equal', '==')
 
     return expr
 

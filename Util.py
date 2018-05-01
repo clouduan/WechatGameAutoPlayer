@@ -13,7 +13,7 @@ def GetScreenshots():
 
 def GetCharacters():
     for imgName in os.listdir('Screenshots'):
-        img = Image.open(os.path.join('Screenshots', 'imgName'))
+        img = Image.open(os.path.join('Screenshots', imgName))
         img = Binaryzation(img.crop([0, 700, 1080, 1200]))
         horizontalSegImgs = HorizontalCut(img)
         vertialSegImgs = VerticalCut(horizontalSegImgs[1])

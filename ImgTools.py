@@ -8,7 +8,7 @@ def Binaryzation(img, threshold=220):
     img = img.convert('L')
     table = []
     for i in range(256):
-        if i < threshold:
+        if i > threshold:
             table.append(0)
         else:
             table.append(1)
@@ -19,13 +19,13 @@ def Binaryzation(img, threshold=220):
 @TimeMeasuring
 def VerticalCut(binImg):
     _, height = binImg.size
+    pix = list(np.sum(np.array(binImg) == 0, axis=0))
     # 列表保存像素累加值大于0的列
-    pix = np.array(binImg)
-    xp = list(np.sum(pix, axis=0))
     x0 = []
-    for x in range(len(xp)):
-        if xp[x] > 1:
+    for x in range(len(pix)):
+        if pix[x] > 1:
             x0.append(x)
+
     # 找出边界
     segList = []
     segList.append(x0[0])
@@ -33,26 +33,24 @@ def VerticalCut(binImg):
         if abs(x0[i] - x0[i - 1]) > 1:
             segList.extend([x0[i - 1], x0[i]])
     segList.append(x0[-1])
+    print(segList)
 
     imgList = []
-    # 判断是整对
-    if len(segList) % 2 == 0:
-        for i in range(len(segList) // 2):
-            segImg = binImg.crop([segList[i * 2], 0, segList[i * 2 + 1], height])
-            imgList.append(segImg)
-        return imgList
-    else:
-        return False
+    # 切割顺利的话应该是整对
+    for i in range(len(segList) // 2):
+        segImg = binImg.crop([segList[i * 2], 0, segList[i * 2 + 1], height])
+        imgList.append(segImg)
+    return imgList
 
 
 @TimeMeasuring
 def HorizontalCut(binImg):
     width, _ = binImg.size
-    pix = np.array(binImg)
-    yp = list(np.sum(pix, axis=1))
+    pix = list(np.sum(np.array(binImg) == 0, axis=1))
+    print(pix)
     y0 = []
-    for y in range(len(yp)):
-        if yp[y] > 1:
+    for y in range(len(pix)):
+        if pix[y] > 1:
             y0.append(y)
     # 找出边界
     segList = []
@@ -62,25 +60,18 @@ def HorizontalCut(binImg):
             segList.extend([y0[i - 1], y0[i]])
     segList.append(y0[-1])
 
-    if len(segList) == 4:
-        segImg1 = binImg.crop([0, segList[0], width, segList[1]])
-        segImg2 = binImg.crop([0, segList[2], width, segList[3]])
-        return [segImg1, segImg2]
-    else:
-        return False
+    # 切割顺利的话应该是长度为4的list
+    segImg1 = binImg.crop([0, segList[0], width, segList[1]])
+    segImg2 = binImg.crop([0, segList[2], width, segList[3]])
+    return [segImg1, segImg2]
 
 
 def Hash(img):
     img = img.resize((20, 30), Image.LANCZOS).convert("L")
     pixels = np.array(img).flatten()
-    avg = pixels.mean()
-    hashVal = ''
-    for i in pixels:
-        if i > avg:
-            hashVal += '1'
-        else:
-            hashVal += '0'
-    return hashVal
+    hs = (pixels > pixels.mean()).astype(int)
+    hs = ''.join(str(e) for e in hs)
+    return hs
 
 
 def HammingDistance(hash1, hash2):
@@ -88,6 +79,7 @@ def HammingDistance(hash1, hash2):
         print('hash1: ', hash1)
         print('hash2: ', hash2)
         raise ValueError("Undefined for sequences of unequal length")
+
     return sum(i != j for i, j in zip(hash1, hash2))
 
 
@@ -98,6 +90,7 @@ def Recognize(img):
     """
     img = img.convert('L')
     img = Binaryzation(img)
+    img.show()
 
     horizontalSegImgs = HorizontalCut(img)
     characterList1 = VerticalCut(horizontalSegImgs[0])
