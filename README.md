@@ -1,6 +1,6 @@
 # 微信小游戏《加减大师》辅助
 ![language-python](https://img.shields.io/badge/language-python-blue.svg)
-![tested-OnePlus3](https://img.shields.io/badge/tested-OnePlus3-brightgreen.svg)
+[![Build Status](https://travis-ci.org/clouduan/WechatGameAutoPlayer.svg?branch=master)](https://travis-ci.org/clouduan/WechatGameAutoPlayer)
 [![license](https://img.shields.io/github/license/clouduan/WechatGameAutoPlayer.svg)](https://github.com/clouduan/WechatGameAutoPlayer/blob/master/LICENSE)
 
 ## 游戏说明
@@ -34,6 +34,7 @@ $ sudo pip3 install -r requirements.txt
 + 将手机调到第一题界面，用投屏软件将手机画面投到电脑上。这里推荐使用 [Vysor](https://vysor.io/)，目前提供 Windows/MacOSX 客户端和 Chrome 应用，推荐使用 Chrome 应用。好处是跨平台而且方便。
 
 + 先用相关软件测量包含等式的矩形区域的坐标（左上角的xy值和右下角的xy值），以及 √ 或 × 区域的坐标值，并填入 Config.py 中的相应位置。所用的工具 Windows 上推荐用系统自带画图软件，Linux 可以用 Gimp。矩形区域的选取很重要，可以参考下图标记的区域：
+
 ![Projection](./Images/Projection.png)
 
 + 运行 AutoPlayPC.py 即可。在一加三手机上测试通过，拿到了娃娃...
