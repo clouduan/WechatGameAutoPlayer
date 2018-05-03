@@ -42,7 +42,9 @@ $ sudo pip3 install -r requirements.txt
 ## 实现原理
 + ~~ADB: 获取手机游戏界面截图，并对截图进行灰度化和二值化处理~~
 + 截图：在电脑上对手机等式区域截图，速度很快，极大减小耗时。
-+ 字符识别：先二值化图像，然后横向分割为两部分，再对每一部分进行纵向分割，得到单个字符（数字和运算符号）。将每个字符图片用一种特定的 hash 函数计算 hash 值，与预先储存的该字符的 hash 值比对（计算汉明距离），汉明距离最小的项所对应的即是该字符的值。
++ 字符识别：字符识别没有采用普遍的机器学习方法，而是采用一种叫感知哈希算法（PHA）的相似图片匹配法。在我的另一项目[CaptchaRecognizer](https://github.com/clouduan/CaptchaRecognizer)中有利用其识别验证码的实现。具体做法简述如下：
+
+    先二值化图像，然后横向分割为两部分，再对每一部分进行纵向分割，得到单个字符（数字和运算符号）。将每个字符图片用一种特定的 hash 函数计算 hash 值，与预先储存的该字符的 hash 值比对（计算汉明距离），汉明距离最小的项所对应的即是该字符的值。
 + 判断：得到所有字符后，将其顺序连接还原为等式，用 `eval()` 函数判断对错。
 + 点击：根据判断结果点击电脑界面的 √ 或 ×，而投屏软件竟然几乎可以和手机实现同步，不可思议...
 
@@ -57,4 +59,4 @@ $ sudo pip3 install -r requirements.txt
 - 使用过程中出现问题，欢迎在 [Issues](https://github.com/clouduan/WechatGameAutoPlayer/issues/) 区提出！ 也可以联系 dyzplus@gmail.com。
 
 ## 协议
-该 Repo 所有代码及图片均采用 [Apache-2.0](https://github.com/clouduan/WechatGameAutoPlayer/blob/master/LICENSE) 协议。
+该 Repo 所有代码及图片均采用 [GPL](https://github.com/clouduan/WechatGameAutoPlayer/blob/master/LICENSE) 协议。

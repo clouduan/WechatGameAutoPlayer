@@ -1,22 +1,22 @@
-from Util import TimeMeasuring
-from ImgTools import Recognize
+from Util import time_it
+from ImgTools import recognize
 import os
 from PIL import Image
 
 
-def GetScreenshot():
+def get_screenshot():
     os.system('adb exec-out screencap -p > screenshot.png')
     scr = Image.open('screenshot.png')
     scr = scr.crop([0, 700, 1080, 1200])
     return scr
 
 
-@TimeMeasuring
+@time_it
 def Play():
     flag = ""
     while True:
-        scr = GetScreenshot()
-        expr = Recognize(scr)
+        scr = get_screenshot()
+        expr = recognize(scr)
         print(expr, eval(expr))
         if flag == expr:
             continue
