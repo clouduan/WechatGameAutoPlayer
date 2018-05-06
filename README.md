@@ -3,24 +3,27 @@
 [![Build Status](https://travis-ci.org/clouduan/WechatGameAutoPlayer.svg?branch=master)](https://travis-ci.org/clouduan/WechatGameAutoPlayer)
 [![license](https://img.shields.io/github/license/clouduan/WechatGameAutoPlayer.svg)](https://github.com/clouduan/WechatGameAutoPlayer/blob/master/LICENSE)
 
-## 游戏说明
+## 游戏介绍
 「加减大师」是腾讯推出的一款微信小游戏，玩法极其简单，它给出一个等式，要玩家在指定时间内判断等式的对错，答对40个就算挑战成功，可以赢取娃娃。
 游戏界面截图、辅助运行、讨战成功界面如下
 
 <div align="center">
-    <img src="./Images/PlusSubstractMaster1.jpg" height="150">
-    <img src="./Images/PlusSubstractMaster2.jpg" height="150">
-    <img src="./Images/PlusSubstractMaster3.png" height="150"> 
-    <img src="./Images/PlusSubstractMaster4.gif" height="150">
-    <img src="./Images/Succeed.jpg" height="150">
+    <img src="./Images/PlusSubstractMaster1.jpg" height="200">
+    <img src="./Images/PlusSubstractMaster2.jpg" height="200">
+    <img src="./Images/PlusSubstractMaster3.png" height="200"> 
+    <img src="./Images/PlusSubstractMaster4.gif" height="200">
+    <img src="./Images/Succeed.jpg" height="200">
 </div>
 
-**WechatGameAutoPlayer** 是用 python 语言实现的一个脚本，可通过 ADB 从手机获得游戏界面截图，然后进行字符识别并判断所给等式的对错，实现自动点击。本脚本纯属娱乐，请勿恶意使用，开心就好~
+**WechatGameAutoPlayer** 是用 python 语言实现的一个朴素脚本，可通过 ADB 从手机获得游戏界面截图，然后进行字符识别并判断所给等式的对错，实现自动点击。本脚本纯属娱乐，开心就好~
+
+## 效果展示
+GFM 不支持嵌入网页视频，我在 Zhihu 里发的一篇分享里有发效果录屏。[点击进入](https://zhuanlan.zhihu.com/p/36387916)
 
 ## 使用方法
 + 配置 ADB，Windows 系统需另装 ADB 驱动并将可执行文件加入到环境变量 Path 中。这一步是为了后面连接电脑并投屏。
 
-+ 克隆代码到本地
++ 克隆/下载代码到本地
 ```
 $ git clone https://github.com/clouduan/WechatGameAutoPlayer.git
 ```
@@ -37,7 +40,7 @@ $ sudo pip3 install -r requirements.txt
 
 ![Projection](./Images/Projection.png)
 
-+ 运行 AutoPlayPC.py 即可。在一加三手机上测试通过，拿到了娃娃...
++ 运行 AutoPlayPC.py 即可。在一加三手机上测试通过。
 
 ## 实现原理
 + ~~ADB: 获取手机游戏界面截图，并对截图进行灰度化和二值化处理~~
@@ -49,14 +52,14 @@ $ sudo pip3 install -r requirements.txt
 + 点击：根据判断结果点击电脑界面的 √ 或 ×，而投屏软件竟然几乎可以和手机实现同步，不可思议...
 
 ## Todo
-投屏软件的使用一下子解决了全部问题...
+投屏软件的使用一下子解决了若干问题...
 - [x] 速度问题，这是个亟待解决的问题。详情参见[Issue-2](https://github.com/clouduan/WechatGameAutoPlayer/issues/2)
-- [x] 适配 IOS 系统
 - [x] 适配不同屏幕尺寸的手机
+- [ ] 适配 IOS 系统
 
-## 讨论
+## 讨论反馈
 - 熟悉 ADB 和投屏软件原理的朋友，欢迎参与[此讨论](https://github.com/clouduan/WechatGameAutoPlayer/issues/2)。
 - 使用过程中出现问题，欢迎在 [Issues](https://github.com/clouduan/WechatGameAutoPlayer/issues/) 区提出！ 也可以联系 dyzplus@gmail.com。
 
 ## 协议
-该 Repo 所有代码及图片均采用 [GPL](https://github.com/clouduan/WechatGameAutoPlayer/blob/master/LICENSE) 协议。
+该 Repo 所有代码及图片均采用 [GPL-3.0](https://github.com/clouduan/WechatGameAutoPlayer/blob/master/LICENSE) 协议。
