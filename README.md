@@ -52,10 +52,10 @@ $ sudo pip3 install -r requirements.txt
 + 点击：根据判断结果点击电脑界面的 √ 或 ×，而投屏软件竟然几乎可以和手机实现同步，不可思议...
 
 ## Todo
-投屏软件的使用一下子解决了全部问题...
+投屏软件的使用一下子解决了若干问题...
 - [x] 速度问题，这是个亟待解决的问题。详情参见[Issue-2](https://github.com/clouduan/WechatGameAutoPlayer/issues/2)
-- [x] 适配 IOS 系统
 - [x] 适配不同屏幕尺寸的手机
+- [ ] 适配 IOS 系统
 
 ## 讨论反馈
 - 熟悉 ADB 和投屏软件原理的朋友，欢迎参与[此讨论](https://github.com/clouduan/WechatGameAutoPlayer/issues/2)。
