@@ -8,7 +8,6 @@
     <img src="./Images/game1.jpg" height="250">
     <img src="./Images/game2.jpg" height="250">
     <img src="./Images/autoplay.gif" height="250">
-    <img src="./Images/succeed.jpg" height="200">
 </div>
 
 **WechatGameAutoPlayer** 是用 python 语言实现的一个小脚本，通过 ADB 从手机获得游戏界面截图，然后进行字符识别并判断所给等式的对错，实现自动点击。
