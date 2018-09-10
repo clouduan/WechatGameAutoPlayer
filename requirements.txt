@@ -3,4 +3,3 @@ pywin32; sys_platform=='win32'
 PyUserInput
 numpy
 Pillow
-pyscreenshot

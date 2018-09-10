@@ -19,7 +19,7 @@ GFM 不支持嵌入网页视频，我在 Zhihu 里发的一篇分享里有发效
 + 配置 ADB，Windows 系统需另装 ADB 驱动并将可执行文件加入到环境变量 Path 中。这一步是为了后面连接电脑并投屏。
 
 + 克隆/下载代码到本地
-    ```
+    ```bash
     $ git clone https://github.com/clouduan/WechatGameAutoPlayer.git --depth=1
     ```
 
@@ -29,21 +29,32 @@ GFM 不支持嵌入网页视频，我在 Zhihu 里发的一篇分享里有发效
 
     然后执行
 
-    ```
+    ```bash
     $ sudo pip3 install -r requirements.txt
     ```
-+ ~~将手机调到游戏界面，运行 AutoPlay.py 文件即可~~ ADB 太慢了，直接在手机上操作的话，无法对付最后几题，于是采用投屏方法。
 
-+ 将手机调到第一题界面，用投屏软件将手机画面投到电脑上。这里推荐使用 [Vysor](https://vysor.io/)，目前提供 Windows/MacOSX 客户端和 Chrome 应用，推荐使用 Chrome 应用，好处是跨平台而且方便。
++ 将手机调到答题界面，用投屏软件将手机画面投到电脑上。这里推荐使用 [Vysor](https://vysor.io/)，目前提供 Windows/MacOSX 客户端和 Chrome 应用，推荐使用 Chrome 应用，好处是跨平台而且方便。
 
 + 先用相关软件测量包含等式的矩形区域的坐标（左上角的xy值和右下角的xy值），以及 √ 或 × 区域的坐标值，并填入 Config.py 中的相应位置。所用的工具 Windows 上推荐用系统自带画图软件，Linux 可以用 Gimp。矩形区域的选取很重要，可以参考下图标记的区域：
 
 ![sample.png](Images/sample.png)
 
-+ 运行 AutoPlayPC.py 即可。
++ 设置完成后，可以运行下面命令查看是否可以正确地截取到算式区域。
+    ```bash
+    python util.py --check_location
+    ```
 
++ 运行 autoplay.py 即可。
+默认答题次数为 99999，如果想限制答题次数，可以加参数，比如我想答 420 道即可，就可以运行
+    ```bash
+    python autoplay.py --loops=420
+    ```
+
++ 可以在 config.py 中配置二值化的阈值，一般 180~240，默认 230，如果效果不理想可以自己调。之后需要更新 hash 文件，运行
+    ```bash
+    python util.py --update_hashfiles
+    ```
 ## 实现原理
-+ ~~ADB: 获取手机游戏界面截图，并对截图进行灰度化和二值化处理~~
 + 截图：在电脑上对手机等式区域截图，速度很快，极大减小耗时。
 + 字符识别：字符识别没有采用普遍的机器学习方法，而是采用一种叫感知哈希算法（PHA）的相似图片匹配法。在 [CaptchaRecognizer](https://github.com/clouduan/CaptchaRecognizer)中有利用其识别验证码的实现。具体做法简述如下：
 

@@ -1,83 +1,86 @@
+"""
+生成预 hash 文件；检查 config 中 location_on_pc 是否配置好
+"""
+import sys
 import os
-import time
-import subprocess
-from io import BytesIO
-
-from PIL import Image
-import pyscreenshot as ImageGrab
-from pymouse import PyMouse
-from config import debug
+import json
+from imgtools import *
+from config import location_on_pc as loc
 
 
-def timing(func):
-    def wrap(*args, **kwargs):
-        time_flag = time.perf_counter()
-        result = func(*args)
-        # 显示用时
-        if debug:
-            print(func.__name__ + ': %.5fs' % (time.perf_counter() - time_flag))
-        return result
+def get_hashfile():
+    """获得图像的 hash 值保存进 json 文件，用于前期处理"""
+    hash_vals = {}
+    for char in os.listdir('Characters'):
+        img = Image.open(os.path.join('Characters', char))
+        hash_val = hashing(binarize(img))
+        char_name = char.split('.')[0]
+        hash_vals[char_name] = hash_val
     
-    return wrap
+    print(hash_vals.items())
+    with open('HashFiles/hash.json', 'w') as fp:
+        json.dump(hash_vals, fp)
 
 
-@timing
-def get_screenshot_adb_1():
-    process = subprocess.Popen('adb shell screencap -p', shell=True, stdout=subprocess.PIPE)
-    screenshot = process.stdout.read()
-    imgFile = BytesIO(screenshot)
-    img = Image.open(imgFile)
+def get_chars():
+    """从截图样本中得到单个字符的图像，用于前期处理"""
+    for img_name in os.listdir('Screenshots'):
+        img = Image.open(os.path.join('Screenshots', img_name))
+        # 此处的值因人而异，只要包含算式区域即可
+        img = binarize(img.crop([0, 700, 1080, 1200]))
+        h_cut_imgs = horizontal_cut(img)
+        char_list1 = vertical_cut(h_cut_imgs[0])
+        # char_list2 = vertical_cut(h_cut_imgs[1])
+        for char in char_list1:
+            char.show()
+            pic_name = input('name:')
+            if pic_name:
+                char.save('Characters/{}.png'.format(pic_name))
 
 
-@timing
-def get_screenshot_adb_2():
-    os.system('adb exec-out screencap -p > screenshot.png')
-    img = Image.open('screenshot.png')
+def check_location():
+    """得到截图并打开，以便观察 config 中设置是否正确"""
+    if sys.platform == 'win32':
+        from PIL import ImageGrab
+        scr = ImageGrab.grab([loc['left_top_x'], loc['left_top_y'], loc['right_buttom_x'], loc['right_buttom_y']])
+        # scr.save('screenshot.png')
+        scr.show()
+        return scr
+    elif sys.platform == 'linux':
+        cmd = 'import -window root -crop {0}x{1}+{2}+{3} screenshot.png'
+        cmd = cmd.format(loc['right_buttom_x'] - loc['left_top_x'], loc['right_buttom_y'] - loc['left_top_y'],
+                         loc['left_top_x'], loc['left_top_y'])
+        os.system(cmd)
+        scr = Image.open('screenshot.png')
+        scr.show()
+        return scr
+    else:
+        print('Unsupported platform: ', sys.platform)
+        sys.exit()
 
 
-@timing
-def simulate_click_adb():
-    os.system('adb shell input tap 300 1500')
-
-
-@timing
-def get_screenshot_linux_1():
-    '''
-    不支持预选定area
-    '''
-    im = ImageGrab.grab()
-
-
-@timing
-def get_screenshot_linux_2():
-    os.system('import -window root -crop 300x180+100+300 screenshot.png')
-    src = Image.open('screenshot.png')
-    return src
-
-
-@timing
-def get_screenshot_linux_3():
-    '''
-    不支持预选定area
-        '''
-    os.system('scrot screenshot.png')
-
-
-@timing
-def get_screenshot_linux_4():
-    '''
-    不支持预选定area
-    '''
-    os.system('gnome-screenshot -f screenshot.png')
-
-
-@timing
-def simulate_click_pc():
-    m = PyMouse()
-    m.click(150, 650, 1)
-
-
-@timing
-def get_screenshot_windows():
-    from PIL import ImageGrab
-    img = ImageGrab.grab([100, 100, 400, 400])
+if __name__ == '__main__':
+    """
+    --check_location
+    --update_hashfile
+    """
+    if len(sys.argv) > 1:
+        if sys.argv[1].startswith('--'):
+            option = sys.argv[1][2:]
+        else:
+            print("Error:")
+            print("Wrong argument!")
+            print("")
+            print("- Run 'python util.py --check_location' to check the equation grabbed from the screenshot.")
+            print("- Run 'python util.py --update_hashfile' to update the hashfiles.")
+            sys.exit()
+        if option == 'check_location':
+            check_location()
+        elif option == 'update_hashfile':
+            get_hashfile()
+    else:
+        print("Warning:")
+        print("No options specified.")
+        print("")
+        print("- Run 'python util.py check_location' to check the equation grabbed from the screenshot.")
+        print("- Run 'python util.py update_hashfile' to update the hashfiles.")
